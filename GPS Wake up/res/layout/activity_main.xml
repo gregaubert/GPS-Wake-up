@@ -8,7 +8,6 @@
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:apiKey="0Mtc-56wn9-eof-R9rn4hJM_jdCSDyJU2H3J3pA"
+        android:apiKey="@string/apikey"
         android:clickable="true" />
-
 </RelativeLayout>
