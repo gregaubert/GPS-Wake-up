@@ -1,8 +1,9 @@
 package gps.wake.up;
 
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
 
-public class Alarm {
+public class Alarm extends OverlayItem {
 	
 	private int id;
 	private String name;
@@ -12,6 +13,18 @@ public class Alarm {
 	private boolean vibrator;
 	private String alarmName;
 	private int volume;
+	
+	public Alarm(GeoPoint location, String title, String text) {
+		super(location, title, text);
+	}
+	
+	public Alarm(int id, GeoPoint location, int radius){
+		super(location, "", "");
+		this.id = id;
+		this.location = location;
+		this.radius = radius;
+	}
+
 
 	public int getId() {
 		return id;
@@ -75,14 +88,6 @@ public class Alarm {
 
 	public void setVolume(int volume) {
 		this.volume = volume;
-	}
-
-	public Alarm() {}
-	
-	public Alarm(int id, GeoPoint location, int radius){
-		this.id = id;
-		this.location = location;
-		this.radius = radius;
 	}
 
 }
