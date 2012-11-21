@@ -45,19 +45,16 @@ public class MainActivity extends MapActivity implements OnClickListener {
 		btnSearch.setOnClickListener(this);
 
 		List<Overlay> mapOverlays = mapView.getOverlays();
-		Drawable drawable = this.getResources().getDrawable(
-				R.drawable.icon_blue);
+		Drawable drawable = this.getResources().getDrawable(R.drawable.icon_blue);
 		RadiusItemizedOverlay itemizedoverlay = new RadiusItemizedOverlay(
 				drawable, this);
 
 		GeoPoint point = new GeoPoint(19240000, -99120000);
-		Alarm overlayitem = new Alarm(point, "Hola, Mundo!",
-				"I'm in Mexico City!");
+		Alarm overlayitem = new Alarm(point, "Hola, Mundo!", "I'm in Mexico City!");
 		overlayitem.setRadius(20000);
 
 		GeoPoint point2 = new GeoPoint(35410000, 139460000);
-		Alarm overlayitem2 = new Alarm(point2, "Sekai, konichiwa!",
-				"I'm in Japan!");
+		Alarm overlayitem2 = new Alarm(point2, "Sekai, konichiwa!", "I'm in Japan!");
 		overlayitem2.setRadius(50000);
 
 		myLocation = new MyLocationOverlay(getApplicationContext(), mapView);
@@ -102,20 +99,13 @@ public class MainActivity extends MapActivity implements OnClickListener {
 
 				mapView.getController().animateTo(p);
 				mapView.getController().setZoom(12);
-
-				RadiusItemizedOverlay itemizedoverlay = new RadiusItemizedOverlay(
-						this.getResources().getDrawable(R.drawable.icon_red),
-						this);
 				
-				Alarm overlayitem = new Alarm(p, txtSearch.getText().toString(),"");
-				overlayitem.setRadius(0);
+				SearchOverlay searchOverlay = new SearchOverlay(this, p);
+				mapView.getOverlays().add(searchOverlay);
 				
-				List<Overlay> listOfOverlays = mapView.getOverlays();
-				listOfOverlays.clear();
-				listOfOverlays.add(itemizedoverlay);
-
 				mapView.invalidate();
 				txtSearch.setText("");
+				
 			} else {
 				AlertDialog.Builder adb = new AlertDialog.Builder(this);
 				adb.setTitle("Google Map");
