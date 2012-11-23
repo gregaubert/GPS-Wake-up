@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -54,7 +55,7 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<Alarm> {
 	}
 	
 	@Override
-	public void draw(android.graphics.Canvas canvas, MapView mapView, boolean shadow){
+	public void draw(Canvas canvas, MapView mapView, boolean shadow){
 		if (shadow)
 			for(Alarm alarm : mOverlays)
 				if(alarm.getRadius() > 0){

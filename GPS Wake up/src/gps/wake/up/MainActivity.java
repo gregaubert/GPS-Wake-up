@@ -3,13 +3,6 @@ package gps.wake.up;
 import java.io.IOException;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-
 import android.app.AlertDialog;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -20,7 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
 
 public class MainActivity extends MapActivity implements OnClickListener {
 
@@ -46,8 +44,7 @@ public class MainActivity extends MapActivity implements OnClickListener {
 
 		List<Overlay> mapOverlays = mapView.getOverlays();
 		Drawable drawable = this.getResources().getDrawable(R.drawable.icon_blue);
-		RadiusItemizedOverlay itemizedoverlay = new RadiusItemizedOverlay(
-				drawable, this);
+		RadiusItemizedOverlay itemizedoverlay = new RadiusItemizedOverlay(drawable, this);
 
 		GeoPoint point = new GeoPoint(19240000, -99120000);
 		Alarm overlayitem = new Alarm(point, "Hola, Mundo!", "I'm in Mexico City!");
