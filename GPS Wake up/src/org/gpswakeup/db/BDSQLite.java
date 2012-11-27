@@ -1,4 +1,5 @@
-package gps.wake.up;
+package org.gpswakeup.db;
+
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

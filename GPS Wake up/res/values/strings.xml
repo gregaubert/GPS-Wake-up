@@ -5,8 +5,10 @@
     <string name="title_activity_main">MapActivity</string>
     <string name="apikey">0Mtc-56wn9-eof-R9rn4hJM_jdCSDyJU2H3J3pA</string>
     <string name="apikey2">0Mtc-56wn9-dfojDfLT-LbR9R2phIjTuHZnYySA</string>
+    <string name="apikeygpswakeup">0Mtc-56wn9-fw9kGk6jYM1bzVBlw1wAzoYxwSDg</string>
     <string name="hello_world">Hello world!</string>
     <string name="recherche_hint">Rechercher une adresse</string>
     <string name="search">Recherche</string>
+    <string name="title_activity_edit_alarm">Modifier une alarme</string>
 
 </resources>

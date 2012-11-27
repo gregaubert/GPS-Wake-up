@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="gps.wake.up"
+    package="org.gpswakeup.activity"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -29,6 +29,13 @@
 
         <uses-library android:name="com.google.android.maps" />
 
+        <activity
+            android:name=".EditAlarmActivity"
+            android:label="@string/title_activity_edit_alarm" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.gpswakeup.activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

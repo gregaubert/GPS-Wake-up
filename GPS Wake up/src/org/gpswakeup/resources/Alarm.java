@@ -1,4 +1,4 @@
-package gps.wake.up;
+package org.gpswakeup.resources;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
@@ -14,17 +14,28 @@ public class Alarm extends OverlayItem {
 	private String alarmName;
 	private int volume;
 	
-	public Alarm(GeoPoint location, String title, String text) {
-		super(location, title, text);
+	public Alarm(int id, String name, GeoPoint location, boolean enabled, int radius, boolean vibrator, String alarmName, int volume) {
+		super(location, "Alarme " + id, name);
+		this.id = id;
+		this.name = name;
+		this.location = location;
+		this.enabled = enabled;
+		this.radius = radius;
+		this.vibrator = vibrator;
+		this.alarmName = alarmName;
+		this.volume = volume;
 	}
-	
+
+
+
 	public Alarm(int id, GeoPoint location, int radius){
-		super(location, "", "");
+		super(location, "Alarme " + id, "");
 		this.id = id;
 		this.location = location;
 		this.radius = radius;
 	}
 
+    
 
 	public int getId() {
 		return id;
