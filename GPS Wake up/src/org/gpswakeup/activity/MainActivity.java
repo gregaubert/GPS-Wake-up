@@ -9,16 +9,15 @@ import org.gpswakeup.resources.OverlayManager;
 import org.gpswakeup.resources.SearchListener;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.actionbarsherlock.view.Menu;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 
-public class MainActivity extends MapActivity {
+public class MainActivity extends SherlockMapActivity {
 
 	private MapView mMapView;
 	private MyLocationOverlay mMyLocation;
@@ -69,8 +68,8 @@ public class MainActivity extends MapActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
+		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

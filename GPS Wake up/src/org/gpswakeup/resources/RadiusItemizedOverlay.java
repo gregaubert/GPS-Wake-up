@@ -76,7 +76,7 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	@Override
 	protected boolean onTap(int index) {
 		
-		if(index < mOverlaysAlarm.size()){
+		if(index >= 0 && index < mOverlaysAlarm.size()){
 			final Alarm alarm = mOverlaysAlarm.get(index);
 			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 			dialog.setTitle(alarm.getName());
@@ -98,6 +98,33 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				}
 			};
 			dialog.setPositiveButton("Modifier", listener);
+			dialog.setNegativeButton("Annuler", listener);
+			dialog.show();
+			
+			return true;
+		}
+		else if(index >= mOverlaysAlarm.size() && index < mOverlaysAlarm.size() + mOverlaysSearch.size()){
+			final OverlayItem overlay = mOverlaysSearch.get(index-mOverlaysAlarm.size());
+			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+			dialog.setTitle("Ajouter une alarme");
+			dialog.setMessage("Recherche : " + overlay.getSnippet());
+			OnClickListener listener = new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(DialogInterface.BUTTON_POSITIVE == which){
+						Log.i("GPSWAKEUP", "ajouter alarm ");
+						//Intent intent = new Intent(mContext, EditAlarmActivity.class);
+						//intent.putExtra("id", overlay.getId());
+						//mContext.startActivity(intent);
+					}
+					else if(DialogInterface.BUTTON_NEGATIVE == which){
+						Log.i("GPSWAKEUP", "annuler");
+						dialog.cancel();
+					}
+				}
+			};
+			dialog.setPositiveButton("Ajouter", listener);
 			dialog.setNegativeButton("Annuler", listener);
 			dialog.show();
 			
