@@ -8,40 +8,7 @@
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:apiKey="@string/apikey2"
+        android:apiKey="@string/apikey"
         android:clickable="true" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:alpha="0.75"
-        android:background="@color/white"
-        android:gravity="top" >
-
-        <EditText
-            android:id="@+id/txtSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/btnSearch"
-            android:alpha="1"
-            android:ems="10"
-            android:hint="@string/recherche_hint"
-            android:inputType="textPostalAddress"
-            android:typeface="normal" />
-
-        <ImageButton
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txtSearch"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:alpha="1"
-            android:contentDescription="@string/search"
-            android:src="@drawable/ic_action_search" />
-
-    </RelativeLayout>
 
 </RelativeLayout>

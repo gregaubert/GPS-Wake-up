@@ -5,14 +5,19 @@ import java.util.List;
 
 import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
+import org.gpswakeup.resources.MapSearchView;
 import org.gpswakeup.resources.OverlayManager;
-import org.gpswakeup.resources.SearchListener;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.view.Gravity;
+import android.view.ViewGroup.LayoutParams;
 
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
@@ -21,11 +26,10 @@ public class MainActivity extends SherlockMapActivity {
 
 	private MapView mMapView;
 	private MyLocationOverlay mMyLocation;
-	private EditText mTxtSearch;
-	private ImageButton mBtnSearch;
 	private OverlayManager mOverlayManager;
 	private AlarmBD mAlarmBD;
 	private List<Alarm> mAlarmList;
+	private ConnectivityManager mConnectivityManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +38,8 @@ public class MainActivity extends SherlockMapActivity {
 
 		mMapView = (MapView) findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
-
-		mTxtSearch = (EditText) findViewById(R.id.txtSearch);
-		mBtnSearch = (ImageButton) findViewById(R.id.btnSearch);
-		mBtnSearch.setOnClickListener(new SearchListener(this, mTxtSearch));
+		
+		mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		
 		mOverlayManager = new OverlayManager(this, mMapView);
 		OverlayManager.setInstance(mOverlayManager);
@@ -60,7 +62,7 @@ public class MainActivity extends SherlockMapActivity {
 				mMapView.getController().animateTo(mMyLocation.getMyLocation());
 			}
 		});
-
+		
 		mMapView.getOverlays().add(mMyLocation);
 		mMapView.invalidate();
 		//mapView.setLongClickable(true);
@@ -68,12 +70,33 @@ public class MainActivity extends SherlockMapActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+		
+		getSupportMenuInflater().inflate(R.menu.activity_main, menu);	
+		
+		//Create the search view
+        SearchView searchView = new MapSearchView(this, getSupportActionBar().getThemedContext());
+        searchView.setQueryHint(getString(R.string.recherche_hint));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setQueryRefinementEnabled(true);
+        
+        menu.add(getString(R.string.search))
+	        .setIcon(R.drawable.ic_action_search)
+	        .setActionView(searchView)
+	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+	
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	public boolean isOnline() {
+	    NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnected()) {
+	        return true;
+	    }
+	    return false;
 	}
 }
