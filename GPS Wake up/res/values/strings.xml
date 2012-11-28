@@ -8,10 +8,10 @@
     <string name="apikey2">0Mtc-56wn9-dfojDfLT-LbR9R2phIjTuHZnYySA</string>
     <string name="hello_world">Hello world!</string>
     <string name="recherche_hint">Rechercher une adresse</string>
-    <string name="search">Recherche</string>
+    <string name="menu_search">Recherche</string>
     <string name="toast_no_connection">Aucune connection internet détéctée.</string>
     <string name="toast_search_finish">Recherche terminée.</string>
     <string name="toast_no_result">Aucun résultat.</string>
     <string name="toast_search_error">Erreur lors de la recherche.</string>
-
+	<string name="menu_list">Liste</string>
 </resources>

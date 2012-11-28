@@ -16,11 +16,11 @@ public class EditAlarmActivity extends SherlockActivity {
         setContentView(R.layout.activity_edit_alarm);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getSupportMenuInflater().inflate(R.menu.activity_edit_alarm, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.activity_edit_alarm, menu);
+        return true;
+    }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

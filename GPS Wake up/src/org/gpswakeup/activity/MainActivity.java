@@ -12,8 +12,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.ViewGroup.LayoutParams;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -34,7 +32,9 @@ public class MainActivity extends SherlockMapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);	// transparence
 		setContentView(R.layout.activity_main);
+		//getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_gray));	// transparence
 
 		mMapView = (MapView) findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
@@ -71,7 +71,11 @@ public class MainActivity extends SherlockMapActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);	
+		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+		
+		menu.add(getString(R.string.menu_list))
+	        .setIcon(R.drawable.ic_list)
+	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
 		//Create the search view
         SearchView searchView = new MapSearchView(this, getSupportActionBar().getThemedContext());
@@ -79,12 +83,17 @@ public class MainActivity extends SherlockMapActivity {
         searchView.setSubmitButtonEnabled(true);
         searchView.setQueryRefinementEnabled(true);
         
-        menu.add(getString(R.string.search))
-	        .setIcon(R.drawable.ic_action_search)
+        menu.add(getString(R.string.menu_search))
+	        .setIcon(R.drawable.ic_search)
 	        .setActionView(searchView)
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 	
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	@Override
