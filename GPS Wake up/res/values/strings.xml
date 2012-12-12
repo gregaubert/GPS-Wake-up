@@ -14,4 +14,10 @@
     <string name="toast_no_result">Aucun résultat.</string>
     <string name="toast_search_error">Erreur lors de la recherche.</string>
 	<string name="menu_list">Liste</string>
+	<string name="dialog_modify">Modifier l\'alarme ?</string>
+	<string name="dialog_add">Ajouter une alarme</string>
+	<string name="dialog_btn_modify">Modifier</string>
+	<string name="dialog_btn_cancel">Annuler</string>
+	<string name="dialog_btn_add">Ajouter</string>
+	
 </resources>

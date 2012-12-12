@@ -58,27 +58,27 @@ public class AlarmBD {
 	public long insertAlarm(Alarm alarm){
 		ContentValues values = new ContentValues();
 		values.put(COL_ID, alarm.getId());
+		values.put(COL_NAME, alarm.getName());
 		values.put(COL_LAT, alarm.getLocation().getLatitudeE6());
 		values.put(COL_LONG, alarm.getLocation().getLongitudeE6());
-		values.put(COL_NAME, alarm.getName());
 		values.put(COL_ENABLED, alarm.isEnabled()?1:0);
 		values.put(COL_RADIUS, alarm.getRadius());
+		values.put(COL_VIBRATOR, alarm.isVibrator()?1:0);
 		values.put(COL_ALARM_NAME, alarm.getAlarmName());
 		values.put(COL_VOLUME, alarm.getVolume());
-		values.put(COL_VIBRATOR, alarm.isVibrator()?1:0);
 		return db.insert(TABLE_ALARMS, null, values);
 	}
 	
 	public int updateAlarm(int id, Alarm alarm){
 		ContentValues values = new ContentValues();
+		values.put(COL_NAME, alarm.getName());
 		values.put(COL_LAT, alarm.getLocation().getLatitudeE6());
 		values.put(COL_LONG, alarm.getLocation().getLongitudeE6());
-		values.put(COL_NAME, alarm.getName());
 		values.put(COL_ENABLED, alarm.isEnabled()?1:0);
 		values.put(COL_RADIUS, alarm.getRadius());
+		values.put(COL_VIBRATOR, alarm.isVibrator()?1:0);
 		values.put(COL_ALARM_NAME, alarm.getAlarmName());
 		values.put(COL_VOLUME, alarm.getVolume());
-		values.put(COL_VIBRATOR, alarm.isVibrator()?1:0);
 		return db.update(TABLE_ALARMS, values, COL_ID + " = " + id, null);
 	}
 	

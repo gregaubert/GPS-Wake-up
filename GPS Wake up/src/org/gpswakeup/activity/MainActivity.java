@@ -52,8 +52,6 @@ public class MainActivity extends SherlockMapActivity {
 		for(Alarm alarm : mAlarmList)
 			mOverlayManager.addAlarm(alarm);
 		
-		mOverlayManager.addAlarm(new Alarm(1000, new GeoPoint(19240000,-99120000), 3000));
-		
 		mMyLocation = new MyLocationOverlay(getApplicationContext(), mMapView);
 		mMyLocation.enableMyLocation();
 
@@ -78,7 +76,8 @@ public class MainActivity extends SherlockMapActivity {
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
 		//Create the search view
-        SearchView searchView = new MapSearchView(this, getSupportActionBar().getThemedContext());
+		SearchView searchView = new MapSearchView(this, getSupportActionBar().getThemedContext());
+		
         searchView.setQueryHint(getString(R.string.recherche_hint));
         searchView.setSubmitButtonEnabled(true);
         searchView.setQueryRefinementEnabled(true);
@@ -88,7 +87,7 @@ public class MainActivity extends SherlockMapActivity {
 	        .setActionView(searchView)
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 	
-		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 	
 	@Override
@@ -107,5 +106,17 @@ public class MainActivity extends SherlockMapActivity {
 	        return true;
 	    }
 	    return false;
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putAll(mOverlayManager.saveInstanceState());
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		mOverlayManager.restoreInstanceState(savedInstanceState);
 	}
 }

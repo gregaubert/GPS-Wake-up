@@ -3,6 +3,7 @@ package org.gpswakeup.resources;
 import java.util.ArrayList;
 
 import org.gpswakeup.activity.EditAlarmActivity;
+import org.gpswakeup.activity.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,25 +26,34 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
 	private ArrayList<Alarm> mOverlaysAlarm = new ArrayList<Alarm>();
 	private ArrayList<OverlayItem> mOverlaysSearch = new ArrayList<OverlayItem>();
+
 	private Context mContext;
+	private Drawable mInactivMarker;
+	private Drawable mSearchMarker;
 	
-	public RadiusItemizedOverlay(Drawable defaultMarker) {
+	public RadiusItemizedOverlay(Drawable defaultMarker, Drawable inactivMarker, Drawable searchMarker) {
 		super(boundCenterBottom(defaultMarker));
+		mInactivMarker = inactivMarker;
+		mSearchMarker = searchMarker;
 	}
 	
-	public RadiusItemizedOverlay(Drawable defaultMarker, Context context) {
+	public RadiusItemizedOverlay(Drawable defaultMarker, Drawable inactivMarker, Drawable searchMarker, Context context) {
 		super(boundCenterBottom(defaultMarker));
+		mInactivMarker = inactivMarker;
+		mSearchMarker = searchMarker;
 		mContext = context;
 		populate();
 	}
 	
 	public void addOverlay(OverlayItem overlay) {
-		overlay.setMarker(boundCenterBottom(overlay.getMarker(0)));
+		overlay.setMarker(boundCenterBottom(mSearchMarker));
 		mOverlaysSearch.add(overlay);
 	    populate();
 	}
 	
 	public void addAlarm(Alarm alarm) {
+		if(!alarm.isEnabled())
+			alarm.setMarker(boundCenterBottom(mInactivMarker));
 	    mOverlaysAlarm.add(alarm);
 	    populate();
 	}
@@ -58,6 +68,10 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	public void clearSearch(){
 		mOverlaysSearch.clear();
+	}
+	
+	public ArrayList<OverlayItem> getOverlaysSearch() {
+		return mOverlaysSearch;
 	}
 	
 	@Override
@@ -80,7 +94,7 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			final Alarm alarm = mOverlaysAlarm.get(index);
 			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 			dialog.setTitle(alarm.getName());
-			dialog.setMessage("Modifier les options de l'alarme ?");
+			dialog.setMessage(R.string.dialog_modify);
 			OnClickListener listener = new OnClickListener() {
 				
 				@Override
@@ -97,8 +111,8 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 					}
 				}
 			};
-			dialog.setPositiveButton("Modifier", listener);
-			dialog.setNegativeButton("Annuler", listener);
+			dialog.setPositiveButton(R.string.dialog_btn_modify, listener);
+			dialog.setNegativeButton(R.string.dialog_btn_cancel, listener);
 			dialog.show();
 			
 			return true;
@@ -106,7 +120,7 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		else if(index >= mOverlaysAlarm.size() && index < mOverlaysAlarm.size() + mOverlaysSearch.size()){
 			final OverlayItem overlay = mOverlaysSearch.get(index-mOverlaysAlarm.size());
 			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-			dialog.setTitle("Ajouter une alarme");
+			dialog.setTitle(R.string.dialog_add);
 			dialog.setMessage("Recherche : " + overlay.getSnippet());
 			OnClickListener listener = new OnClickListener() {
 				
@@ -124,8 +138,8 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 					}
 				}
 			};
-			dialog.setPositiveButton("Ajouter", listener);
-			dialog.setNegativeButton("Annuler", listener);
+			dialog.setPositiveButton(R.string.dialog_btn_add, listener);
+			dialog.setNegativeButton(R.string.dialog_btn_cancel, listener);
 			dialog.show();
 			
 			return true;

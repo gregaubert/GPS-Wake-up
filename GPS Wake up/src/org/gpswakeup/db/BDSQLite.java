@@ -17,7 +17,7 @@ public class BDSQLite extends SQLiteOpenHelper {
 					AlarmBD.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + 
 					AlarmBD.COL_NAME + " TEXT," + AlarmBD.COL_LAT + " INTEGER NOT NULL, " +
 					AlarmBD.COL_LONG + " INTEGER NOT NULL, " + AlarmBD.COL_ENABLED + " INTEGER, " + 
-					AlarmBD.COL_RADIUS + " INTEGER NOT NULL, " + AlarmBD.COL_VIBRATOR + "INTEGER, " + 
+					AlarmBD.COL_RADIUS + " INTEGER NOT NULL, " + AlarmBD.COL_VIBRATOR + " INTEGER, " + 
 					AlarmBD.COL_ALARM_NAME + " TEXT, " + AlarmBD.COL_VOLUME + " INTEGER);";
 	
 	public BDSQLite(Context context) {

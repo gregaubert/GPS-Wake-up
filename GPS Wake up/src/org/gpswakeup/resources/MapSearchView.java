@@ -57,15 +57,17 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 			
 		try {
 			List<Address> addresses = mGeoCoder.getFromLocationName(query, 5);
-
+			
 			if (addresses.size() > 0) {
-				GeoPoint p = new GeoPoint(
-						(int) (addresses.get(0).getLatitude() * 1E6),
-						(int) (addresses.get(0).getLongitude() * 1E6));
-
-				OverlayManager.getInstance().addSearch(p, addresses.get(0).getAddressLine(0));
+				OverlayManager.getInstance().clearSearch();
+				for(Address address : addresses){
+					GeoPoint p = new GeoPoint(
+							(int) (address.getLatitude() * 1E6),
+							(int) (address.getLongitude() * 1E6));
+	
+					OverlayManager.getInstance().addSearch(p, address.getAddressLine(0));
+				}
 				OverlayManager.getInstance().invalidate();
-				
 				setQuery("", false);
 				Utility.makeCenterToast(mContext, R.string.toast_search_finish, Toast.LENGTH_SHORT).show();
 				//menuitem.collapseActionView();	// Pour revenir a l'icon après la recherche
