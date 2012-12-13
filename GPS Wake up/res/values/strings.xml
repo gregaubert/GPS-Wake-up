@@ -19,5 +19,11 @@
 	<string name="dialog_btn_modify">Modifier</string>
 	<string name="dialog_btn_cancel">Annuler</string>
 	<string name="dialog_btn_add">Ajouter</string>
+	<string name="edit_name">Nom de l&amp;apos;alarme</string>
+	<string name="edit_distance">Distance</string>
+	<string name="edit_vibrator">Vibreur</string>
+	<string name="edit_ringtone">Sonnerie</string>
+	<string name="edit_volume">Volume</string>
+	<string name="menu_save">Sauver</string>
 	
 </resources>

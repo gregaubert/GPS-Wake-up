@@ -6,6 +6,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 
 public class EditAlarmActivity extends SherlockActivity {
 
@@ -28,6 +29,9 @@ public class EditAlarmActivity extends SherlockActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.menu_save:
+            	Log.i("GPSWAKEUP", "save");
+            	return true;
         }
         return super.onOptionsItemSelected(item);
     }
