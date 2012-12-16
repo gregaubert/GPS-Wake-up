@@ -67,7 +67,7 @@ public class OverlayManager {
 	public void invalidate(){
 		mMapView.invalidate();
 	}
-	
+
 	public Bundle saveInstanceState(){
 		Bundle bundle = new Bundle();
 		ArrayList<OverlayItem> searchOverlays = mItemOverlay.getOverlaysSearch();

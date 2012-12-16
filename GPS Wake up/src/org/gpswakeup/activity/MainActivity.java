@@ -8,15 +8,19 @@ import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
 import org.gpswakeup.resources.MapSearchView;
 import org.gpswakeup.resources.OverlayManager;
+import org.gpswakeup.views.LongpressMapView;
+import org.gpswakeup.views.OnMapLongpressListener;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 
@@ -25,7 +29,7 @@ public class MainActivity extends SherlockMapActivity {
 	
 	private static List<Alarm> mAlarmList = new ArrayList<Alarm>();
 	private AlarmBD mAlarmBD;
-	private MapView mMapView;
+	private LongpressMapView mMapView;
 	private MyLocationOverlay mMyLocation;
 	private OverlayManager mOverlayManager;
 	private ConnectivityManager mConnectivityManager;
@@ -37,7 +41,7 @@ public class MainActivity extends SherlockMapActivity {
 		setContentView(R.layout.activity_main);
 		//getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_gray));	// transparence
 		
-		mMapView = (MapView) findViewById(R.id.mapview);
+		mMapView = (LongpressMapView) findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
 		
 		mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -71,7 +75,7 @@ public class MainActivity extends SherlockMapActivity {
 		
 		mMapView.getOverlays().add(mMyLocation);
 		mMapView.invalidate();
-		//mapView.setLongClickable(true);
+		setMapLongPress();
 	}
 
 	@Override
@@ -106,6 +110,21 @@ public class MainActivity extends SherlockMapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	private void setMapLongPress() {
+		mMapView.setOnMapLongpressListener(new OnMapLongpressListener() {
+			@Override
+			public void onMapLongpress(final MapView view, final GeoPoint longpressLocation) {
+				runOnUiThread(new Runnable() 
+	            {
+	                public void run() 
+	                {
+	                	mOverlayManager.addSearch(longpressLocation, "Nouveau point");
+	                }
+	            });	
+			}
+		});
 	}
 	
 	public boolean isOnline() {

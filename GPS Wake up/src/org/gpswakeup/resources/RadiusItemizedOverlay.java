@@ -17,7 +17,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
@@ -36,6 +35,7 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		super(boundCenterBottom(defaultMarker));
 		mInactivMarker = inactivMarker;
 		mSearchMarker = searchMarker;
+		populate();
 	}
 	
 	public RadiusItemizedOverlay(Drawable defaultMarker, Drawable inactivMarker, Drawable searchMarker, Context context) {
@@ -49,26 +49,37 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	public void addOverlay(OverlayItem overlay) {
 		overlay.setMarker(boundCenterBottom(mSearchMarker));
 		mOverlaysSearch.add(overlay);
-	    populate();
+		setLastFocusedIndex(-1);
+		populate();
 	}
 	
 	public void addAlarm(Alarm alarm) {
 		if(!alarm.isEnabled())
 			alarm.setMarker(boundCenterBottom(mInactivMarker));
 	    mOverlaysAlarm.add(alarm);
-	    populate();
+	    setLastFocusedIndex(-1);
+		populate();
 	}
 	
 	public boolean removeAlarm(Alarm alarm){
-		return mOverlaysAlarm.remove(alarm);
+		if(mOverlaysAlarm.remove(alarm)){
+			setLastFocusedIndex(-1);
+			populate();
+			return true;
+		}
+		return false;
 	}
 	
 	public void clearAlarm(){
 		mOverlaysAlarm.clear();
+		setLastFocusedIndex(-1);
+		populate();
 	}
 	
 	public void clearSearch(){
 		mOverlaysSearch.clear();
+		setLastFocusedIndex(-1);
+		populate();
 	}
 	
 	public ArrayList<OverlayItem> getOverlaysSearch() {
@@ -90,7 +101,6 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
 	@Override
 	protected boolean onTap(int index) {
-		
 		if(index >= 0 && index < mOverlaysAlarm.size()){
 			final Alarm alarm = mOverlaysAlarm.get(index);
 			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
@@ -142,10 +152,8 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			dialog.setPositiveButton(R.string.dialog_btn_add, listener);
 			dialog.setNegativeButton(R.string.dialog_btn_cancel, listener);
 			dialog.show();
-			
 			return true;
 		}
-		
 		return false;
 	}
 	
