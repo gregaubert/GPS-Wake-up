@@ -3,7 +3,8 @@
     <string name="app_name">GPS Wake up</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">GPS Wake up!</string>
-    <string name="title_activity_edit_alarm">Modifier une alarme</string>
+    <string name="title_activity_edit_alarm">Modifier l\'alarme</string>
+    <string name="title_activity_add_alarm">Ajouter l\'alarme</string>
     <string name="apikey">0Mtc-56wn9-eof-R9rn4hJM_jdCSDyJU2H3J3pA</string>
     <string name="apikey2">0Mtc-56wn9-dfojDfLT-LbR9R2phIjTuHZnYySA</string>
     <string name="hello_world">Hello world!</string>
@@ -13,13 +14,15 @@
     <string name="toast_search_finish">Recherche terminée.</string>
     <string name="toast_no_result">Aucun résultat.</string>
     <string name="toast_search_error">Erreur lors de la recherche.</string>
+    <string name="toast_insert">Alarme ajoutée.</string>
+    <string name="toast_edit">Alarme modifiée.</string>
 	<string name="menu_list">Liste</string>
 	<string name="dialog_modify">Modifier l\'alarme ?</string>
 	<string name="dialog_add">Ajouter une alarme</string>
 	<string name="dialog_btn_modify">Modifier</string>
 	<string name="dialog_btn_cancel">Annuler</string>
 	<string name="dialog_btn_add">Ajouter</string>
-	<string name="edit_name">Nom de l&amp;apos;alarme</string>
+	<string name="edit_name">Nom de l\'alarme</string>
 	<string name="edit_distance">Distance</string>
 	<string name="edit_vibrator">Vibreur</string>
 	<string name="edit_ringtone">Sonnerie</string>

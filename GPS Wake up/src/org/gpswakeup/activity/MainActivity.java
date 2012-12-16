@@ -1,6 +1,7 @@
 package org.gpswakeup.activity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gpswakeup.db.AlarmBD;
@@ -16,17 +17,17 @@ import android.os.Bundle;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 
 public class MainActivity extends SherlockMapActivity {
 
+	
+	private static List<Alarm> mAlarmList = new ArrayList<Alarm>();
+	private AlarmBD mAlarmBD;
 	private MapView mMapView;
 	private MyLocationOverlay mMyLocation;
 	private OverlayManager mOverlayManager;
-	private AlarmBD mAlarmBD;
-	private List<Alarm> mAlarmList;
 	private ConnectivityManager mConnectivityManager;
 
 	@Override
@@ -35,7 +36,7 @@ public class MainActivity extends SherlockMapActivity {
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);	// transparence
 		setContentView(R.layout.activity_main);
 		//getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_gray));	// transparence
-
+		
 		mMapView = (MapView) findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
 		
@@ -49,8 +50,15 @@ public class MainActivity extends SherlockMapActivity {
 		
 		mAlarmList = mAlarmBD.getAllAlarm();
 		
+		mMapView.getController().setZoom(11);
+		if(mAlarmList.size() > 0){
+			mMapView.getController().animateTo(mAlarmList.get(0).getLocation());
+		}
+		
 		for(Alarm alarm : mAlarmList)
 			mOverlayManager.addAlarm(alarm);
+		
+		mAlarmBD.close();
 		
 		mMyLocation = new MyLocationOverlay(getApplicationContext(), mMapView);
 		mMyLocation.enableMyLocation();
@@ -118,5 +126,18 @@ public class MainActivity extends SherlockMapActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		mOverlayManager.restoreInstanceState(savedInstanceState);
+	}
+
+	public static Alarm getAlarm(int index) {
+		return mAlarmList.get(index);
+	}
+	
+	public static int getAlarmIndex(Alarm alarm){
+		return mAlarmList.indexOf(alarm);
+	}
+	
+	public static void addAlarm(Alarm alarm) {
+		mAlarmList.add(alarm);
+		OverlayManager.getInstance().addAlarm(alarm);
 	}
 }

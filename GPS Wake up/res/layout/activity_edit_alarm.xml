@@ -40,7 +40,8 @@
             android:layout_alignBottom="@+id/textView1"
             android:layout_alignParentRight="true"
             android:text="4 km"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:ignore="HardcodedText" />
 
         <SeekBar
             android:id="@+id/sbDistance"
@@ -50,7 +51,9 @@
             android:layout_below="@+id/textView1"
             android:layout_marginBottom="14dp"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/imageView1" />
+            android:layout_toRightOf="@+id/imageView1"
+            android:max="100"
+            android:progress="5" />
 
         <CheckBox
             android:id="@+id/chkVibrator"
@@ -83,12 +86,14 @@
             android:id="@+id/sbVolume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView3"
+            android:layout_below="@+id/txtVolume"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/ImageView01" />
+            android:layout_toRightOf="@+id/imgVolume"
+            android:max="100"
+            android:progress="20" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/txtVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -109,7 +114,7 @@
             android:src="@drawable/location_web_site" />
 
         <ImageView
-            android:id="@+id/ImageView01"
+            android:id="@+id/imgVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

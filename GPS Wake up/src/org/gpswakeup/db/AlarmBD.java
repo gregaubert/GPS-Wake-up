@@ -57,7 +57,7 @@ public class AlarmBD {
 	
 	public long insertAlarm(Alarm alarm){
 		ContentValues values = new ContentValues();
-		values.put(COL_ID, alarm.getId());
+		//values.put(COL_ID, alarm.getId());
 		values.put(COL_NAME, alarm.getName());
 		values.put(COL_LAT, alarm.getLocation().getLatitudeE6());
 		values.put(COL_LONG, alarm.getLocation().getLongitudeE6());
@@ -69,7 +69,7 @@ public class AlarmBD {
 		return db.insert(TABLE_ALARMS, null, values);
 	}
 	
-	public int updateAlarm(int id, Alarm alarm){
+	public int updateAlarm(Alarm alarm){
 		ContentValues values = new ContentValues();
 		values.put(COL_NAME, alarm.getName());
 		values.put(COL_LAT, alarm.getLocation().getLatitudeE6());
@@ -79,7 +79,7 @@ public class AlarmBD {
 		values.put(COL_VIBRATOR, alarm.isVibrator()?1:0);
 		values.put(COL_ALARM_NAME, alarm.getAlarmName());
 		values.put(COL_VOLUME, alarm.getVolume());
-		return db.update(TABLE_ALARMS, values, COL_ID + " = " + id, null);
+		return db.update(TABLE_ALARMS, values, COL_ID + " = " + alarm.getId(), null);
 	}
 	
 	public int removeAlarmByID(int id){

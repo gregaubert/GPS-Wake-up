@@ -4,101 +4,99 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 
 public class Alarm extends OverlayItem {
-	
-	private int id;
-	private String name;
-	private GeoPoint location;
-	private boolean enabled;
-	private int radius;
-	private boolean vibrator;
-	private String alarmName;
-	private int volume;
-	
-	public Alarm(int id, String name, GeoPoint location, boolean enabled, int radius, boolean vibrator, String alarmName, int volume) {
+
+	private int mId = -1;
+	private String mName = "";
+	private GeoPoint mLocation;
+	private boolean mEnabled = true;
+	private int mRadius = 5000;
+	private boolean mVibrator = true;
+	private String mAlarmName = "";
+	private int mVolume = 20;
+
+	public Alarm(int id, String name, GeoPoint location, boolean enabled,
+			int radius, boolean vibrator, String alarmName, int volume) {
 		super(location, "Alarme " + id, name);
-		this.id = id;
-		this.name = name;
-		this.location = location;
-		this.enabled = enabled;
-		this.radius = radius;
-		this.vibrator = vibrator;
-		this.alarmName = alarmName;
-		this.volume = volume;
+		mId = id;
+		mName = name;
+		mLocation = location;
+		mEnabled = enabled;
+		mRadius = radius;
+		mVibrator = vibrator;
+		mAlarmName = alarmName;
+		mVolume = volume;
 	}
 
-
-
-	public Alarm(int id, GeoPoint location, int radius){
+	public Alarm(int id, GeoPoint location, int radius, String name) {
 		super(location, "Alarme " + id, "");
-		this.id = id;
-		this.location = location;
-		this.radius = radius;
+		mId = id;
+		mLocation = location;
+		mRadius = radius;
+		mName = name;
 	}
-
-    
 
 	public int getId() {
-		return id;
+		return mId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		mId = id;
 	}
 
 	public String getName() {
-		return name;
+		return mName;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		mName = name;
 	}
 
 	public GeoPoint getLocation() {
-		return location;
+		return mLocation;
 	}
 
 	public void setLocation(GeoPoint location) {
-		this.location = location;
+		this.mLocation = location;
 	}
 
 	public boolean isEnabled() {
-		return enabled;
+		return mEnabled;
 	}
 
 	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+		this.mEnabled = enabled;
 	}
 
 	public int getRadius() {
-		return radius;
+		return mRadius;
 	}
 
 	public void setRadius(int radius) {
-		this.radius = radius;
+		this.mRadius = radius;
 	}
 
 	public boolean isVibrator() {
-		return vibrator;
+		return mVibrator;
 	}
 
 	public void setVibrator(boolean vibrator) {
-		this.vibrator = vibrator;
+		this.mVibrator = vibrator;
 	}
 
 	public String getAlarmName() {
-		return alarmName;
+		return mAlarmName;
 	}
 
 	public void setAlarmName(String alarmName) {
-		this.alarmName = alarmName;
+		this.mAlarmName = alarmName;
 	}
 
 	public int getVolume() {
-		return volume;
+		return mVolume;
 	}
 
 	public void setVolume(int volume) {
-		this.volume = volume;
+		this.mVolume = volume;
 	}
 
 }

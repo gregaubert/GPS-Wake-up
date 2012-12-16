@@ -56,9 +56,12 @@ public class OverlayManager {
 	}
 	
 	public void addSearch(GeoPoint p, String txt){
-		mMapView.getController().animateTo(p);
-		mMapView.getController().setZoom(12);
 		mItemOverlay.addOverlay(new OverlayItem(p, "Recherche", txt));
+	}
+	
+	public void moveMapTo(GeoPoint p){
+		mMapView.getController().animateTo(p);
+		mMapView.getController().setZoom(11);
 	}
 	
 	public void invalidate(){

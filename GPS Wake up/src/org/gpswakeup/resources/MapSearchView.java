@@ -25,12 +25,11 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 		super(themedContext);
 		mGeoCoder = new Geocoder(context);
 		mContext = context;
-		//setupSearchView();
-		setOnQueryTextListener(this);
+		setupSearchView();
 	}
 	
-//	private void setupSearchView() {
-//
+	private void setupSearchView() {
+
 //		SearchManager searchManager = (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
 //		if (searchManager != null) {
 //			List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
@@ -44,8 +43,8 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 //			}
 //			setSearchableInfo(info);
 //		}
-//		setOnQueryTextListener(this);
-//	}
+		setOnQueryTextListener(this);
+	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
@@ -59,6 +58,7 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 			List<Address> addresses = mGeoCoder.getFromLocationName(query, 5);
 			
 			if (addresses.size() > 0) {
+				boolean first = true;
 				OverlayManager.getInstance().clearSearch();
 				for(Address address : addresses){
 					GeoPoint p = new GeoPoint(
@@ -66,6 +66,10 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 							(int) (address.getLongitude() * 1E6));
 	
 					OverlayManager.getInstance().addSearch(p, address.getAddressLine(0));
+					if(first){
+						first = false;
+						OverlayManager.getInstance().moveMapTo(p);
+					}
 				}
 				OverlayManager.getInstance().invalidate();
 				setQuery("", false);

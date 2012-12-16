@@ -3,6 +3,7 @@ package org.gpswakeup.resources;
 import java.util.ArrayList;
 
 import org.gpswakeup.activity.EditAlarmActivity;
+import org.gpswakeup.activity.MainActivity;
 import org.gpswakeup.activity.R;
 
 import android.app.AlertDialog;
@@ -100,13 +101,12 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if(DialogInterface.BUTTON_POSITIVE == which){
-						Log.i("GPSWAKEUP", "modifier alarm ");
 						Intent intent = new Intent(mContext, EditAlarmActivity.class);
-						intent.putExtra("id", alarm.getId());
+						intent.setAction(Utility.ACTION_EDIT);
+						intent.putExtra("index", MainActivity.getAlarmIndex(alarm));
 						mContext.startActivity(intent);
 					}
 					else if(DialogInterface.BUTTON_NEGATIVE == which){
-						Log.i("GPSWAKEUP", "annuler");
 						dialog.cancel();
 					}
 				}
@@ -127,13 +127,14 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if(DialogInterface.BUTTON_POSITIVE == which){
-						Log.i("GPSWAKEUP", "ajouter alarm ");
-						//Intent intent = new Intent(mContext, EditAlarmActivity.class);
-						//intent.putExtra("id", overlay.getId());
-						//mContext.startActivity(intent);
+						Intent intent = new Intent(mContext, EditAlarmActivity.class);
+						intent.setAction(Utility.ACTION_NEW);
+						intent.putExtra("snippet", overlay.getSnippet());
+						intent.putExtra("lat", overlay.getPoint().getLatitudeE6());
+						intent.putExtra("long", overlay.getPoint().getLongitudeE6());
+						mContext.startActivity(intent);
 					}
 					else if(DialogInterface.BUTTON_NEGATIVE == which){
-						Log.i("GPSWAKEUP", "annuler");
 						dialog.cancel();
 					}
 				}
