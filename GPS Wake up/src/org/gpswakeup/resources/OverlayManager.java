@@ -46,6 +46,11 @@ public class OverlayManager {
 	public static OverlayManager getInstance(){
 		return instance;
 	}
+	
+	public void refreshAlarm(Alarm alarm){
+		if(mItemOverlay.removeAlarm(alarm))
+			mItemOverlay.addAlarm(alarm);
+	}
 
 	public void addAlarm(Alarm alarm){
 		mItemOverlay.addAlarm(alarm);

@@ -56,6 +56,9 @@ public class RadiusItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	public void addAlarm(Alarm alarm) {
 		if(!alarm.isEnabled())
 			alarm.setMarker(boundCenterBottom(mInactivMarker));
+		else
+			alarm.setMarker(null);
+			
 	    mOverlaysAlarm.add(alarm);
 	    setLastFocusedIndex(-1);
 		populate();

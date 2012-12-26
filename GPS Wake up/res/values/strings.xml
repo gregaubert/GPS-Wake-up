@@ -30,5 +30,9 @@
     <string name="edit_volume">Volume</string>
     <string name="menu_save">Sauver</string>
     <string name="title_activity_wakeup_list">Liste des alarmes</string>
+    <string-array name="context_menu_list">
+        <item >Modifier</item>
+        <item >Supprimer</item>
+    </string-array>
 
 </resources>

@@ -153,6 +153,10 @@ public class MainActivity extends SherlockMapActivity {
 		super.onRestoreInstanceState(savedInstanceState);
 		mOverlayManager.restoreInstanceState(savedInstanceState);
 	}
+	
+	public static List<Alarm> getAlarms(){
+		return mAlarmList;
+	}
 
 	public static Alarm getAlarm(int index) {
 		return mAlarmList.get(index);

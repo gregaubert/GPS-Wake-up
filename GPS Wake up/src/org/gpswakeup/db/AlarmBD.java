@@ -86,15 +86,9 @@ public class AlarmBD {
 		return db.delete(TABLE_ALARMS, COL_ID + " = " + id, null);
 	}
 	
-	public int disableAlarmByID(int id){
+	public int enableAlarmByID(int id, boolean enable){
 		ContentValues values = new ContentValues();
-		values.put(COL_ENABLED, 0);
-		return db.update(TABLE_ALARMS, values, COL_ID + " = " + id, null);
-	}
-	
-	public int enableAlarmByID(int id){
-		ContentValues values = new ContentValues();
-		values.put(COL_ENABLED, 1);
+		values.put(COL_ENABLED, enable?1:0);
 		return db.update(TABLE_ALARMS, values, COL_ID + " = " + id, null);
 	}
 	

@@ -6,12 +6,10 @@ import org.gpswakeup.resources.OverlayManager;
 import org.gpswakeup.resources.Utility;
 
 import android.content.Intent;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -20,7 +18,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -194,5 +191,6 @@ public class EditAlarmActivity extends SherlockActivity {
 			insertNew();
 		else
 			updateOld();
+		mAlarmDB.close();
 	}
 }
