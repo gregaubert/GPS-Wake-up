@@ -12,10 +12,10 @@ import org.gpswakeup.views.LongpressMapView;
 import org.gpswakeup.views.OnMapLongpressListener;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -26,7 +26,8 @@ import com.google.android.maps.MyLocationOverlay;
 
 public class MainActivity extends SherlockMapActivity {
 
-	
+	private final int MENU_LIST = 1;
+	private final int MENU_SEARCH = 2;
 	private static List<Alarm> mAlarmList = new ArrayList<Alarm>();
 	private AlarmBD mAlarmBD;
 	private LongpressMapView mMapView;
@@ -83,7 +84,7 @@ public class MainActivity extends SherlockMapActivity {
 		
 		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 		
-		menu.add(getString(R.string.menu_list))
+		menu.add(Menu.NONE, MENU_LIST, Menu.NONE, getString(R.string.menu_list))
 	        .setIcon(R.drawable.ic_list)
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
@@ -94,7 +95,7 @@ public class MainActivity extends SherlockMapActivity {
         searchView.setSubmitButtonEnabled(true);
         searchView.setQueryRefinementEnabled(true);
         
-        menu.add(getString(R.string.menu_search))
+        menu.add(Menu.NONE, MENU_SEARCH, Menu.NONE, getString(R.string.menu_search))
 	        .setIcon(R.drawable.ic_search)
 	        .setActionView(searchView)
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
@@ -104,6 +105,12 @@ public class MainActivity extends SherlockMapActivity {
 	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch(item.getItemId()){
+		case MENU_LIST:
+			Intent intent = new Intent(this, WakeupListActivity.class);
+			startActivity(intent);
+			break;
+		}
 		return super.onMenuItemSelected(featureId, item);
 	}
 

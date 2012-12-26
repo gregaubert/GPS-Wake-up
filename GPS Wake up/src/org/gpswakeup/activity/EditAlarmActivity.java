@@ -5,14 +5,22 @@ import org.gpswakeup.resources.Alarm;
 import org.gpswakeup.resources.OverlayManager;
 import org.gpswakeup.resources.Utility;
 
+import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +39,8 @@ public class EditAlarmActivity extends SherlockActivity {
 	private CheckBox mChkVibrator;
 	private CheckBox mChkRingTone;
 	private AlarmBD mAlarmDB;
+	private TextView mTxtRingTone;
+	private String mRingTonePath = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,14 +58,32 @@ public class EditAlarmActivity extends SherlockActivity {
 		mSbVolume = (SeekBar) findViewById(R.id.sbVolume);
 		mChkVibrator = (CheckBox) findViewById(R.id.chkVibrator);
 		mChkRingTone = (CheckBox) findViewById(R.id.chkRingTone);
-		// Gerer le spinner
+		mTxtRingTone = (TextView) findViewById(R.id.txtChooseRingTone);
+		
+		mTxtRingTone.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+				intent.putExtra( RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+				intent.putExtra( RingtoneManager.EXTRA_RINGTONE_TITLE, "Choix de la sonnerie");
+				if( mRingTonePath != null)
+					intent.putExtra( RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(mRingTonePath));
+				else
+					intent.putExtra( RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri)null);
+
+				//RingtoneManager.setActualDefaultRingtoneUri(myActivity, RingtoneManager.TYPE_RINGTONE, uri);
+				startActivityForResult(intent, 0);
+			}
+			
+		});
 		
 		mChkRingTone.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mSbVolume.setEnabled(isChecked);
-				findViewById(R.id.spinRingTone).setEnabled(isChecked);
+				findViewById(R.id.txtChooseRingTone).setEnabled(isChecked);
 			}
 		});
 		
@@ -79,6 +107,20 @@ public class EditAlarmActivity extends SherlockActivity {
 				mTxtDistance.setText(progress + " km");
 			}
 		});
+		
+		findViewById(R.id.mainLayout).requestFocus();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+			if (uri != null)
+				mRingTonePath = uri.toString();
+			else
+				mRingTonePath = null;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void loadData() {
@@ -97,6 +139,7 @@ public class EditAlarmActivity extends SherlockActivity {
 		mSbVolume.setProgress(mAlarm.getVolume());
 		mChkVibrator.setChecked(mAlarm.isVibrator());
 		mChkRingTone.setChecked(!mAlarm.getAlarmName().isEmpty());
+		mRingTonePath = mAlarm.getAlarmName().isEmpty()?null:mAlarm.getAlarmName();
 	}
 
 	@Override
@@ -136,9 +179,9 @@ public class EditAlarmActivity extends SherlockActivity {
 		mAlarm.setName(mTxtName.getText().toString());
 		mAlarm.setRadius(mSbDistance.getProgress() * 1000);
 		mAlarm.setVibrator(mChkVibrator.isChecked());
-		if(mChkRingTone.isChecked()){
+		if(mChkRingTone.isChecked() && mRingTonePath != null){
 			mAlarm.setVolume(mSbVolume.getProgress());
-			//TODO alarme name
+			mAlarm.setAlarmName(mRingTonePath);
 		}
 		else{
 			mAlarm.setAlarmName("");

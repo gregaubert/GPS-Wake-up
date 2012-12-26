@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.gpswakeup.activity"
     android:versionCode="1"
@@ -12,21 +13,41 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-        
-    <application android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/Theme.Sherlock" android:allowBackup="true">
-        <activity android:name=".MainActivity" android:label="@string/title_activity_main" android:launchMode="singleInstance">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Sherlock" >
+        <activity
+            android:name="org.gpswakeup.activity.MainActivity"
+            android:label="@string/title_activity_main"
+            android:launchMode="singleInstance" >
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.DEFAULT" />
-        	</intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <uses-library android:name="com.google.android.maps" />
 
-        <activity android:name=".EditAlarmActivity" android:label="@string/title_activity_edit_alarm">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="org.gpswakeup.activity.MainActivity" />
+        <activity
+            android:name="org.gpswakeup.activity.EditAlarmActivity"
+            android:label="@string/title_activity_edit_alarm" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.gpswakeup.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name="org.gpswakeup.activity.WakeupListActivity"
+            android:label="@string/title_activity_wakeup_list"
+            android:parentActivityName="org.gpswakeup.activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.gpswakeup.activity.MainActivity" />
         </activity>
     </application>
 
