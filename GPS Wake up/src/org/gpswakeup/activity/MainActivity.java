@@ -8,6 +8,7 @@ import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
 import org.gpswakeup.resources.MapSearchView;
 import org.gpswakeup.resources.OverlayManager;
+import org.gpswakeup.services.GPSWakeupService;
 import org.gpswakeup.views.LongpressMapView;
 import org.gpswakeup.views.OnMapLongpressListener;
 
@@ -34,6 +35,7 @@ public class MainActivity extends SherlockMapActivity {
 	private MyLocationOverlay mMyLocation;
 	private OverlayManager mOverlayManager;
 	private ConnectivityManager mConnectivityManager;
+	private static MainActivity mInstance = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,8 @@ public class MainActivity extends SherlockMapActivity {
 
 		mAlarmBD = new AlarmBD(this);
 		mAlarmBD.open();
-		
 		mAlarmList = mAlarmBD.getAllAlarm();
+		mAlarmBD.close();
 		
 		mMapView.getController().setZoom(11);
 		if(mAlarmList.size() > 0){
@@ -62,8 +64,6 @@ public class MainActivity extends SherlockMapActivity {
 		
 		for(Alarm alarm : mAlarmList)
 			mOverlayManager.addAlarm(alarm);
-		
-		mAlarmBD.close();
 		
 		mMyLocation = new MyLocationOverlay(getApplicationContext(), mMapView);
 		mMyLocation.enableMyLocation();
@@ -77,6 +77,10 @@ public class MainActivity extends SherlockMapActivity {
 		mMapView.getOverlays().add(mMyLocation);
 		mMapView.invalidate();
 		setMapLongPress();
+		
+		mInstance = this;
+		
+		startService(new Intent(this, GPSWakeupService.class));
 	}
 
 	@Override
@@ -169,5 +173,17 @@ public class MainActivity extends SherlockMapActivity {
 	public static void addAlarm(Alarm alarm) {
 		mAlarmList.add(alarm);
 		OverlayManager.getInstance().addAlarm(alarm);
+	}
+	
+	public static boolean deleteAlarm(Alarm alarm){
+		if(mInstance != null && mAlarmList.remove(alarm)){
+			mInstance.mAlarmBD.open();
+			mInstance.mAlarmBD.removeAlarmByID(alarm.getId());
+			mInstance.mAlarmBD.close();
+			mInstance.startService(new Intent(mInstance, GPSWakeupService.class));
+			OverlayManager.getInstance().removeAlarm(alarm);
+			return true;
+		}
+		return false;
 	}
 }

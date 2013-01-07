@@ -7,7 +7,7 @@ public class Alarm extends OverlayItem {
 
 	private int mId = -1;
 	private String mName = "";
-	private GeoPoint mLocation;
+	private transient GeoPoint mLocation;
 	private boolean mEnabled = true;
 	private int mRadius = 5000;
 	private boolean mVibrator = true;
@@ -98,5 +98,4 @@ public class Alarm extends OverlayItem {
 	public void setVolume(int volume) {
 		this.mVolume = volume;
 	}
-
 }

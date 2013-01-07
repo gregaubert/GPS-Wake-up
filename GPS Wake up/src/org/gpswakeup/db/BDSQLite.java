@@ -31,8 +31,6 @@ public class BDSQLite extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		//On peut fait ce qu'on veut ici moi j'ai décidé de supprimer la table et de la recréer
-		//comme ça lorsque je change la version les id repartent de 0
 		db.execSQL("DROP TABLE " + AlarmBD.TABLE_ALARMS + ";");
 		onCreate(db);
 	}

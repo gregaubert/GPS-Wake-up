@@ -1,86 +1,126 @@
 package org.gpswakeup.activity;
 
-import org.gpswakeup.resources.AlarmToggleAdapter;
 import org.gpswakeup.resources.Alarm;
+import org.gpswakeup.resources.AlarmToggleAdapter;
+import org.gpswakeup.resources.AlarmToggleAdapter.ViewHolder;
+import org.gpswakeup.resources.Utility;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.ContextMenu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
-
 public class WakeupListActivity extends SherlockListActivity {
+		
+	private ActionMode mMode;
+	private static ArrayAdapter<Alarm> mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_wakeup_list);
 		// Show the Up button in the action bar.
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		ArrayAdapter<Alarm> adapter = new AlarmToggleAdapter(this, MainActivity.getAlarms());
-		setListAdapter(adapter);
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
+		mAdapter = new AlarmToggleAdapter(this, MainActivity.getAlarms());
+		setListAdapter(mAdapter);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				if (mMode != null) {
+		            return false;
+		        }
+				getListView().setSelection(position);
+				mMode = startActionMode(new ActionModeAlarm((Alarm)((ViewHolder)view.getTag()).toggle.getTag(), view));
 				return true;
 			}
 		});
-		
-		registerForContextMenu(getListView());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.activity_wakeup_list, menu);
-		return true;
-	}
-	
+	}	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-		if (view.getId() == getListView().getId()) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			menu.setHeaderTitle(MainActivity.getAlarm(info.position).getName());
-			String[] menuItems = getResources().getStringArray(R.array.context_menu_list);
-			for (int i = 0; i < menuItems.length; i++) {
-				menu.add(Menu.NONE, i, i, menuItems[i]);
-			}
-		}
+	private void editAlarm(Alarm alarm) {
+		Intent intent = new Intent(this, EditAlarmActivity.class);
+		intent.setAction(Utility.ACTION_EDIT);
+		intent.putExtra("index", MainActivity.getAlarmIndex(alarm));
+		startActivity(intent);
 	}
 
-	@Override
-	public boolean onContextItemSelected(android.view.MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+	private void deleteAlarm(Alarm alarm) {
+		if(MainActivity.deleteAlarm(alarm)){
+			((AlarmToggleAdapter)getListAdapter()).remove(alarm);
+			Utility.makeCenterToast(this, R.string.toast_delete, Toast.LENGTH_SHORT);
+		}
+		else
+			Utility.makeCenterToast(this, R.string.toast_delete_error, Toast.LENGTH_SHORT);
+	}
+	
+	private final class ActionModeAlarm implements ActionMode.Callback {
 		
-		return true;
+		private Alarm mAlarm;
+		private View mView;
+		
+		public ActionModeAlarm(Alarm alarm, View view) {
+			super();
+			mView = view;
+			mAlarm = alarm;
+		}
+        
+		@Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			mode.getMenuInflater().inflate(R.menu.activity_wakeup_list, menu);			
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        	switch (item.getItemId()) {
+            case R.id.menu_edit:
+                editAlarm(mAlarm);
+                mode.finish();
+                return true;
+            case R.id.menu_delete:
+            	deleteAlarm(mAlarm);
+                mode.finish();
+            	return true;
+            default:
+                return false;
+        	}
+        }
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mView.setSelected(false);
+			mMode = null;
+		}
+    }
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		mAdapter.notifyDataSetChanged();
 	}
 }

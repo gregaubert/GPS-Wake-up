@@ -139,4 +139,29 @@ public class AlarmBD {
 	    // return alarm list
 	    return alarmList;
 	}
+	
+	public List<Alarm> getAllActiveAlarm() {
+	    List<Alarm> alarmList = new ArrayList<Alarm>();
+
+	    // Select All Query
+	    String selectQuery = "SELECT * FROM " + TABLE_ALARMS + " WHERE " + COL_ENABLED + " = 1;";
+	    Cursor cursor = db.rawQuery(selectQuery, null);
+	 
+	    // Looping through all rows and adding to list
+	    if (cursor.moveToFirst()) {
+	        do {
+	            Alarm alarm = new Alarm(cursor.getInt(NUM_COL_ID),cursor.getString(NUM_COL_NAME),
+							new GeoPoint(cursor.getInt(NUM_COL_LAT), cursor.getInt(NUM_COL_LONG)),
+							cursor.getInt(NUM_COL_ENABLED)==1, cursor.getInt(NUM_COL_RADIUS), 
+							cursor.getInt(NUM_COL_VIBRATOR)==1, cursor.getString(NUM_COL_ALARM_NAME),
+							cursor.getInt(NUM_COL_VOLUME));
+
+	            // Adding alarm to list
+	            alarmList.add(alarm);
+	        } while (cursor.moveToNext());
+	    }
+	 
+	    // return alarm list
+	    return alarmList;
+	}
 }

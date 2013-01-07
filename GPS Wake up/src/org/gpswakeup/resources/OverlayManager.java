@@ -47,6 +47,10 @@ public class OverlayManager {
 		return instance;
 	}
 	
+	public boolean removeAlarm(Alarm alarm){
+		return mItemOverlay.removeAlarm(alarm);
+	}
+	
 	public void refreshAlarm(Alarm alarm){
 		if(mItemOverlay.removeAlarm(alarm))
 			mItemOverlay.addAlarm(alarm);

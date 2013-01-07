@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.gpswakeup.activity.R;
 import org.gpswakeup.db.AlarmBD;
+import org.gpswakeup.services.GPSWakeupService;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +26,13 @@ public class AlarmToggleAdapter extends ArrayAdapter<Alarm> {
 		super(context, R.layout.alarm_list_item, list);
 	    mContext = context;
 	    mList = list;
-	    mAlarmDB = new AlarmBD(mContext);
-	    mAlarmDB.open();
-		
+	    mAlarmDB = new AlarmBD(mContext);		
 	}
-
-	static class ViewHolder {
-		protected TextView text1;
-		protected TextView text2;
-		protected ToggleButton toggle;
+	
+	public static class ViewHolder {
+		public TextView text1;
+		public TextView text2;
+		public ToggleButton toggle;
 	}
 	
 	@Override
@@ -52,7 +52,10 @@ public class AlarmToggleAdapter extends ArrayAdapter<Alarm> {
 						public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
 							Alarm alarm = (Alarm) viewHolder.toggle.getTag();
 							alarm.setEnabled(isChecked);
+						    mAlarmDB.open();
 							mAlarmDB.enableAlarmByID(alarm.getId(), isChecked);
+							mAlarmDB.close();
+							mContext.startService(new Intent(mContext, GPSWakeupService.class));
 							OverlayManager.getInstance().refreshAlarm(alarm);
 						}
 					});
@@ -64,14 +67,8 @@ public class AlarmToggleAdapter extends ArrayAdapter<Alarm> {
 		}
 		ViewHolder holder = (ViewHolder) view.getTag();
 		holder.text1.setText(mList.get(position).getName());
-		holder.text2.setText(mList.get(position).getRadius() + " km");
+		holder.text2.setText(mList.get(position).getRadius() / 1000 + " km");
 		holder.toggle.setChecked(mList.get(position).isEnabled());
 		return view;
-	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		mAlarmDB.close();
-		super.finalize();
 	}
 }

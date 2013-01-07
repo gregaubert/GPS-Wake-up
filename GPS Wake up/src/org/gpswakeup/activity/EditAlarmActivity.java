@@ -1,9 +1,11 @@
 package org.gpswakeup.activity;
 
+import org.gpswakeup.activity.R;
 import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
 import org.gpswakeup.resources.OverlayManager;
 import org.gpswakeup.resources.Utility;
+import org.gpswakeup.services.GPSWakeupService;
 
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -62,7 +64,7 @@ public class EditAlarmActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-				intent.putExtra( RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+				intent.putExtra( RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
 				intent.putExtra( RingtoneManager.EXTRA_RINGTONE_TITLE, "Choix de la sonnerie");
 				if( mRingTonePath != null)
 					intent.putExtra( RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(mRingTonePath));
@@ -147,11 +149,11 @@ public class EditAlarmActivity extends SherlockActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		if(item.getItemId() == android.R.id.home){
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
-		case R.id.menu_save:
+		}
+		else if(item.getItemId() == R.id.menu_save){
 			saveModification();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
@@ -191,6 +193,7 @@ public class EditAlarmActivity extends SherlockActivity {
 			insertNew();
 		else
 			updateOld();
+		startService(new Intent(this, GPSWakeupService.class));
 		mAlarmDB.close();
 	}
 }

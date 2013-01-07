@@ -17,11 +17,14 @@
     <string name="toast_search_error">Erreur lors de la recherche.</string>
     <string name="toast_insert">Alarme ajoutée.</string>
     <string name="toast_edit">Alarme modifiée.</string>
+    <string name="toast_delete_error">Supression impossible.</string>
+    <string name="toast_delete">Alarme supprimée.</string>
     <string name="menu_list">Liste</string>
     <string name="dialog_modify">Modifier l\'alarme ?</string>
     <string name="dialog_add">Ajouter une alarme</string>
     <string name="dialog_btn_modify">Modifier</string>
     <string name="dialog_btn_cancel">Annuler</string>
+    <string name="dialog_btn_stop">Stop</string>
     <string name="dialog_btn_add">Ajouter</string>
     <string name="edit_name">Nom de l\'alarme</string>
     <string name="edit_distance">Distance</string>
@@ -30,9 +33,6 @@
     <string name="edit_volume">Volume</string>
     <string name="menu_save">Sauver</string>
     <string name="title_activity_wakeup_list">Liste des alarmes</string>
-    <string-array name="context_menu_list">
-        <item >Modifier</item>
-        <item >Supprimer</item>
-    </string-array>
-
+    <string name="context_menu_edit">Modifier</string>
+    <string name="context_menu_delete">Supprimer</string>
 </resources>
