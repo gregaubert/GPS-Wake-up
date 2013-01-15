@@ -1,8 +1,8 @@
 package org.gpswakeup.activity;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
@@ -14,9 +14,13 @@ import org.gpswakeup.views.OnMapLongpressListener;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -29,12 +33,19 @@ public class MainActivity extends SherlockMapActivity {
 
 	private final int MENU_LIST = 1;
 	private final int MENU_SEARCH = 2;
-	private static List<Alarm> mAlarmList = new ArrayList<Alarm>();
+	private final long UPDATE_MIN_TIME = 1000;//2 * 60 * 1000;
+	private final float UPDATE_MIN_DISTANCE = 100;
+	
+	private static List<Alarm> mAlarmList = new CopyOnWriteArrayList<Alarm>();
+	private SparseBooleanArray mAlreadyRingID;
 	private AlarmBD mAlarmBD;
 	private LongpressMapView mMapView;
 	private MyLocationOverlay mMyLocation;
 	private OverlayManager mOverlayManager;
 	private ConnectivityManager mConnectivityManager;
+	private LocationManager mLocManager;
+	private LocationListener mLocationListener;
+	private Criteria mCriteria;
 	private static MainActivity mInstance = null;
 
 	@Override
@@ -48,6 +59,8 @@ public class MainActivity extends SherlockMapActivity {
 		mMapView.setBuiltInZoomControls(true);
 		
 		mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		mLocManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		
 		mOverlayManager = new OverlayManager(this, mMapView);
 		OverlayManager.setInstance(mOverlayManager);
@@ -80,7 +93,7 @@ public class MainActivity extends SherlockMapActivity {
 		
 		mInstance = this;
 		
-		startService(new Intent(this, GPSWakeupService.class));
+		
 	}
 
 	@Override
@@ -180,7 +193,7 @@ public class MainActivity extends SherlockMapActivity {
 			mInstance.mAlarmBD.open();
 			mInstance.mAlarmBD.removeAlarmByID(alarm.getId());
 			mInstance.mAlarmBD.close();
-			mInstance.startService(new Intent(mInstance, GPSWakeupService.class));
+			mInstance.startService(new Intent("ACTION_REFRESH", null, mInstance, GPSWakeupService.class));
 			OverlayManager.getInstance().removeAlarm(alarm);
 			return true;
 		}

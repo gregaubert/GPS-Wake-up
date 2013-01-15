@@ -193,7 +193,7 @@ public class EditAlarmActivity extends SherlockActivity {
 			insertNew();
 		else
 			updateOld();
-		startService(new Intent(this, GPSWakeupService.class));
+		startService(new Intent("ACTION_REFRESH", null, this, GPSWakeupService.class));
 		mAlarmDB.close();
 	}
 }

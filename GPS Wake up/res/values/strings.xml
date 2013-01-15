@@ -19,6 +19,7 @@
     <string name="toast_edit">Alarme modifiée.</string>
     <string name="toast_delete_error">Supression impossible.</string>
     <string name="toast_delete">Alarme supprimée.</string>
+    <string name="toast_no_provider">Aucun fournisseur de localisation activé. Impossible de démarrer le service d\'alarme GPSWakup.</string>
     <string name="menu_list">Liste</string>
     <string name="dialog_modify">Modifier l\'alarme ?</string>
     <string name="dialog_add">Ajouter une alarme</string>

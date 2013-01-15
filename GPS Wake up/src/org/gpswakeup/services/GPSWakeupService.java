@@ -3,6 +3,7 @@ package org.gpswakeup.services;
 import java.util.List;
 
 import org.gpswakeup.activity.AlertActivity;
+import org.gpswakeup.activity.R;
 import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
 
@@ -17,6 +18,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.widget.Toast;
 
 public class GPSWakeupService extends Service {
 	
@@ -28,13 +30,11 @@ public class GPSWakeupService extends Service {
 	private Criteria mCriteria;
 	private Object mLock = new Object();
 	
-	private final long UPDATE_MIN_TIME = 10*1000;//2 * 60 * 1000;
+	private final long UPDATE_MIN_TIME = 1000;//2 * 60 * 1000;
 	private final float UPDATE_MIN_DISTANCE = 100;
 	
 	@Override
 	public void onCreate() {
-		
-		Log.i("SERVICEGPS", "onCreate");
 		
 		mAlarmBD = new AlarmBD(this);
 		
@@ -47,14 +47,19 @@ public class GPSWakeupService extends Service {
 		HandlerThread thread = new HandlerThread("ServiceStartArguments", HandlerThread.MIN_PRIORITY);
 	    thread.start();
 		
-		mLocManager.requestLocationUpdates(UPDATE_MIN_TIME, UPDATE_MIN_DISTANCE, mCriteria , mLocationListener, thread.getLooper());
-		
+	    try{
+	    	mLocManager.requestLocationUpdates(UPDATE_MIN_TIME, UPDATE_MIN_DISTANCE, mCriteria , mLocationListener, thread.getLooper());
+	    }
+	    catch(IllegalArgumentException ex){
+	    	Toast.makeText(this, R.string.toast_no_provider, Toast.LENGTH_SHORT).show();
+	    	stopSelf();
+	    }
+	    refreshAlarmsList();
 		super.onCreate();
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i("SERVICEGPS", "startcommand");
 		refreshAlarmsList();
 		super.onStartCommand(intent, flags, startId);
 		return START_STICKY;
@@ -90,7 +95,7 @@ public class GPSWakeupService extends Service {
 		mCriteria.setHorizontalAccuracy(Criteria.ACCURACY_MEDIUM);
 		mCriteria.setBearingRequired(false);
 		mCriteria.setCostAllowed(false);
-		mCriteria.setSpeedAccuracy(Criteria.ACCURACY_LOW);
+		mCriteria.setSpeedRequired(false);
 		mCriteria.setPowerRequirement(Criteria.POWER_MEDIUM);
 		
 		mLocationListener = new LocationListener() {
@@ -98,19 +103,19 @@ public class GPSWakeupService extends Service {
 			@Override
 			public void onStatusChanged(String provider, int status, Bundle extras) {
 				// TODO Auto-generated method stub
-				
+				Log.i("SERVICEGPS", "onStatusChanged");
 			}
 			
 			@Override
 			public void onProviderEnabled(String provider) {
 				// TODO Auto-generated method stub
-				
+				Log.i("SERVICEGPS", "onProviderEnabled");
 			}
 			
 			@Override
 			public void onProviderDisabled(String provider) {
 				// TODO Auto-generated method stub
-				
+				Log.i("SERVICEGPS", "onProviderDisabled");
 			}
 			
 			@Override

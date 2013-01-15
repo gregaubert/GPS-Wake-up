@@ -55,7 +55,7 @@ public class AlarmToggleAdapter extends ArrayAdapter<Alarm> {
 						    mAlarmDB.open();
 							mAlarmDB.enableAlarmByID(alarm.getId(), isChecked);
 							mAlarmDB.close();
-							mContext.startService(new Intent(mContext, GPSWakeupService.class));
+							mContext.startService(new Intent("ACTION_REFRESH", null, mContext, GPSWakeupService.class));
 							OverlayManager.getInstance().refreshAlarm(alarm);
 						}
 					});
