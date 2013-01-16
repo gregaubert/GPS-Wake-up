@@ -5,13 +5,18 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * SQLite database helper class
+ * Last update : 16.01.2013
+ * @author Gregoire Aubert
+ */
 public class BDSQLite extends SQLiteOpenHelper {
 	
 	// Global settings
 	private static final int DB_VERSION = 2;
 	private static final String DB_NAME = "BD_GPSWakeUp";
 	
-	// Alarms table creation
+	// Alarms table creation request
 	private static final String CREATE_TABLE_ALARMS = 
 			"CREATE TABLE " + AlarmBD.TABLE_ALARMS + " (" +
 					AlarmBD.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + 
@@ -20,6 +25,10 @@ public class BDSQLite extends SQLiteOpenHelper {
 					AlarmBD.COL_RADIUS + " INTEGER NOT NULL, " + AlarmBD.COL_VIBRATOR + " INTEGER, " + 
 					AlarmBD.COL_ALARM_NAME + " TEXT, " + AlarmBD.COL_VOLUME + " INTEGER);";
 	
+	/**
+	 * Constructor of the database
+	 * @param context is the context of the calling activity
+	 */
 	public BDSQLite(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}

@@ -19,6 +19,12 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.maps.MapActivity;
 
+/**
+ * Map activity from the actionbar sherlock, this class is not a part of the ActionBarSherlock (ABS) library. It's only
+ * a plugins, that's why it is directly my project.
+ * Last update : -
+ * @author Gregoire Aubert
+ */
 public abstract class SherlockMapActivity extends MapActivity implements OnCreatePanelMenuListener, OnPreparePanelListener, OnMenuItemSelectedListener, OnActionModeStartedListener, OnActionModeFinishedListener {
     private ActionBarSherlock mSherlock;
 

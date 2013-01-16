@@ -1,17 +1,22 @@
 package org.gpswakeup.db;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.gpswakeup.resources.Alarm;
-
-import com.google.android.maps.GeoPoint;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.android.maps.GeoPoint;
+
+/**
+ * Represent the alarms in the database
+ * Last update : 16.01.2013
+ * @author Gregoire Aubert
+ */
 public class AlarmBD {
 	
 	// Alarms table definition
@@ -39,25 +44,42 @@ public class AlarmBD {
 	
 	private BDSQLite myDB;
 
+	/**
+	 * Constructor of the table
+	 * @param context is the activity context calling the constructor
+	 */
 	public AlarmBD(Context context) {
 		myDB = new BDSQLite(context);
 	}
 	
+	/**
+	 * Open the database
+	 */
 	public void open(){
 		db = myDB.getWritableDatabase();
 	}
 	
+	/**
+	 * Close the database
+	 */
 	public void close(){
 		db.close();
 	}
 	
+	/**
+	 * @return the SQLiteDatabase object linked to the table
+	 */
 	public SQLiteDatabase getDB(){
 		return db;
 	}
 	
+	/**
+	 * Insert an alarm in the database
+	 * @param alarm is the alarm to be inserted
+	 * @return the id of the alarm inserted
+	 */
 	public long insertAlarm(Alarm alarm){
 		ContentValues values = new ContentValues();
-		//values.put(COL_ID, alarm.getId());
 		values.put(COL_NAME, alarm.getName());
 		values.put(COL_LAT, alarm.getLocation().getLatitudeE6());
 		values.put(COL_LONG, alarm.getLocation().getLongitudeE6());
@@ -69,6 +91,11 @@ public class AlarmBD {
 		return db.insert(TABLE_ALARMS, null, values);
 	}
 	
+	/**
+	 * Update an existing alarm in the database
+	 * @param alarm is the modified alarm
+	 * @return the number of row affected
+	 */
 	public int updateAlarm(Alarm alarm){
 		ContentValues values = new ContentValues();
 		values.put(COL_NAME, alarm.getName());
@@ -82,22 +109,44 @@ public class AlarmBD {
 		return db.update(TABLE_ALARMS, values, COL_ID + " = " + alarm.getId(), null);
 	}
 	
+	/**
+	 * Remove an alarm from the database using her id
+	 * @param id is the id of the alarm to be removed
+	 * @return the number of deleted rows
+	 */
 	public int removeAlarmByID(int id){
 		return db.delete(TABLE_ALARMS, COL_ID + " = " + id, null);
 	}
 	
+	/**
+	 * Change the enabled state of an alarm
+	 * @param id is the id of the alarm to be enabled/disabled
+	 * @param enable is the new status (enabled or disabled)
+	 * @return the number of rows affected
+	 */
 	public int enableAlarmByID(int id, boolean enable){
 		ContentValues values = new ContentValues();
 		values.put(COL_ENABLED, enable?1:0);
 		return db.update(TABLE_ALARMS, values, COL_ID + " = " + id, null);
 	}
 	
+	/**
+	 * Change the radius of the alarm alone
+	 * @param id is the id of the alarm to be modified
+	 * @param radius is the new radius
+	 * @return the number of rows affected
+	 */
 	public int setRadiusByID(int id, int radius){
 		ContentValues values = new ContentValues();
 		values.put(COL_RADIUS, radius);
 		return db.update(TABLE_ALARMS, values, COL_ID + " = " + id, null);
 	}
 	
+	/**
+	 * Return an alarm from the database from her id
+	 * @param id is the id of the alarm to retrieve
+	 * @return an alarm corresponding to the given id
+	 */
 	public Alarm getAlarm(int id) {
 		
 		Cursor cursor = db.query(TABLE_ALARMS, new String[] { COL_ID, COL_NAME, COL_LAT, COL_LONG, COL_ENABLED, 
@@ -115,8 +164,11 @@ public class AlarmBD {
 		return alarm;
 	}
 	
+	/**
+	 * @return a thread-safe list of all alarms in the database
+	 */
 	public List<Alarm> getAllAlarm() {
-	    List<Alarm> alarmList = new ArrayList<Alarm>();
+	    List<Alarm> alarmList = new CopyOnWriteArrayList<Alarm>();
 
 	    // Select All Query
 	    String selectQuery = "SELECT  * FROM " + TABLE_ALARMS;
@@ -136,12 +188,15 @@ public class AlarmBD {
 	        } while (cursor.moveToNext());
 	    }
 	 
-	    // return alarm list
+	    // Return the alarm list
 	    return alarmList;
 	}
 	
+	/**
+	 * @return a thread-safe list of all the enabled alarms in the database
+	 */
 	public List<Alarm> getAllActiveAlarm() {
-	    List<Alarm> alarmList = new ArrayList<Alarm>();
+	    List<Alarm> alarmList = new CopyOnWriteArrayList<Alarm>();
 
 	    // Select All Query
 	    String selectQuery = "SELECT * FROM " + TABLE_ALARMS + " WHERE " + COL_ENABLED + " = 1;";
@@ -161,7 +216,7 @@ public class AlarmBD {
 	        } while (cursor.moveToNext());
 	    }
 	 
-	    // return alarm list
+	    // Return the alarm list
 	    return alarmList;
 	}
 }
