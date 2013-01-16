@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.gpswakeup.activity.R;
 import org.gpswakeup.db.AlarmBD;
-import org.gpswakeup.services.GPSWakeupService;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +53,6 @@ public class AlarmToggleAdapter extends ArrayAdapter<Alarm> {
 						    mAlarmDB.open();
 							mAlarmDB.enableAlarmByID(alarm.getId(), isChecked);
 							mAlarmDB.close();
-							mContext.startService(new Intent("ACTION_REFRESH", null, mContext, GPSWakeupService.class));
 							OverlayManager.getInstance().refreshAlarm(alarm);
 						}
 					});

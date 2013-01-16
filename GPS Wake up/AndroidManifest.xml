@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -50,12 +49,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.gpswakeup.activity.MainActivity" />
-        </activity>
-        <activity
-            android:name="org.gpswakeup.activity.AlertActivity"
-            android:theme="@android:style/Theme.Dialog"
-            android:excludeFromRecents="true"
-            android:noHistory="false">
         </activity>
     </application>
 

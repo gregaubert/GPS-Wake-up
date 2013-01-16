@@ -1,11 +1,9 @@
 package org.gpswakeup.activity;
 
-import org.gpswakeup.activity.R;
 import org.gpswakeup.db.AlarmBD;
 import org.gpswakeup.resources.Alarm;
 import org.gpswakeup.resources.OverlayManager;
 import org.gpswakeup.resources.Utility;
-import org.gpswakeup.services.GPSWakeupService;
 
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -193,7 +191,6 @@ public class EditAlarmActivity extends SherlockActivity {
 			insertNew();
 		else
 			updateOld();
-		startService(new Intent("ACTION_REFRESH", null, this, GPSWakeupService.class));
 		mAlarmDB.close();
 	}
 }

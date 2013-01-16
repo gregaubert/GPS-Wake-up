@@ -8,9 +8,10 @@
     <string name="title_activity_add_alarm">Ajouter l\'alarme</string>
     <string name="apikey">0Mtc-56wn9-eof-R9rn4hJM_jdCSDyJU2H3J3pA</string>
     <string name="apikey2">0Mtc-56wn9-dfojDfLT-LbR9R2phIjTuHZnYySA</string>
-    <string name="hello_world">Hello world!</string>
     <string name="recherche_hint">Rechercher une adresse</string>
     <string name="menu_search">Recherche</string>
+    <string name="menu_gps_enable">GPS disponible</string>
+    <string name="menu_gps_disable">GPS indisponible</string>
     <string name="toast_no_connection">Aucune connection internet détéctée.</string>
     <string name="toast_search_finish">Recherche terminée.</string>
     <string name="toast_no_result">Aucun résultat.</string>
@@ -36,4 +37,5 @@
     <string name="title_activity_wakeup_list">Liste des alarmes</string>
     <string name="context_menu_edit">Modifier</string>
     <string name="context_menu_delete">Supprimer</string>
+    <string name="txt_choose_ring_tone">Choisir une sonnerie</string>
 </resources>

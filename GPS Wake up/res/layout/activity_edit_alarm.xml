@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 		android:descendantFocusability="beforeDescendants"
-		android:focusableInTouchMode="true">
+		android:focusableInTouchMode="true"
+		android:nextFocusForward="@+id/txtName"
+		android:nextFocusDown="@+id/txtName"
+		android:nextFocusRight="@+id/txtName">
 
         <EditText
             android:id="@+id/txtName"
@@ -116,8 +119,8 @@
             android:drawableRight="@drawable/ic_selection"
             android:paddingBottom="8dp"
             android:paddingTop="14dp"
-            android:background="?@android:attr/selectableItemBackground"
-            android:text="Choisir une sonnerie"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/txt_choose_ring_tone"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:focusable="true" />
 

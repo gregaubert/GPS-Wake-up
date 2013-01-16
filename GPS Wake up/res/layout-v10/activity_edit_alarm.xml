@@ -116,9 +116,10 @@
             android:drawableRight="@drawable/ic_selection"
             android:paddingBottom="8dp"
             android:paddingTop="14dp"
-            android:text="Choisir une sonnerie"
+            android:text="@string/txt_choose_ring_tone"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:focusable="true" />
+            android:focusable="true"
+            android:background="@android:drawable/list_selector_background" />
 
         <TextView
             android:id="@+id/txtVolume"

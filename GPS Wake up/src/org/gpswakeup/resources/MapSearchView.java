@@ -74,7 +74,8 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 				OverlayManager.getInstance().invalidate();
 				setQuery("", false);
 				Utility.makeCenterToast(mContext, R.string.toast_search_finish, Toast.LENGTH_SHORT).show();
-				//menuitem.collapseActionView();	// Pour revenir a l'icon après la recherche
+				
+				MainActivity.collapseSearchView();
 				
 			} else {
 				Utility.makeCenterToast(mContext, R.string.toast_no_result, Toast.LENGTH_SHORT).show();
