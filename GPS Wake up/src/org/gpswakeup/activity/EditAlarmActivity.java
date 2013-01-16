@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -31,12 +32,15 @@ public class EditAlarmActivity extends SherlockActivity {
 	private Alarm mAlarm;
 	private EditText mTxtName;
 	private TextView mTxtDistance;
+	private TextView mTxtChooseRingTone;
+	private TextView mTxtVolume;
 	private SeekBar mSbDistance;
 	private SeekBar mSbVolume;
 	private CheckBox mChkVibrator;
 	private CheckBox mChkRingTone;
 	private AlarmBD mAlarmDB;
 	private TextView mTxtRingTone;
+	private ImageView mImgVolume;
 	private String mRingTonePath = null;
 
 	@Override
@@ -51,11 +55,14 @@ public class EditAlarmActivity extends SherlockActivity {
 	private void initComponent(){
 		mTxtName = (EditText) findViewById(R.id.txtName);
 		mTxtDistance = (TextView) findViewById(R.id.txtDistance);
+		mTxtChooseRingTone = (TextView) findViewById(R.id.txtChooseRingTone);
+		mTxtVolume = (TextView) findViewById(R.id.txtVolume);
 		mSbDistance = (SeekBar) findViewById(R.id.sbDistance);
 		mSbVolume = (SeekBar) findViewById(R.id.sbVolume);
 		mChkVibrator = (CheckBox) findViewById(R.id.chkVibrator);
 		mChkRingTone = (CheckBox) findViewById(R.id.chkRingTone);
 		mTxtRingTone = (TextView) findViewById(R.id.txtChooseRingTone);
+		mImgVolume = (ImageView) findViewById(R.id.imgVolume);
 		
 		mTxtRingTone.setOnClickListener(new OnClickListener() {
 			
@@ -69,7 +76,6 @@ public class EditAlarmActivity extends SherlockActivity {
 				else
 					intent.putExtra( RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri)null);
 
-				//RingtoneManager.setActualDefaultRingtoneUri(myActivity, RingtoneManager.TYPE_RINGTONE, uri);
 				startActivityForResult(intent, 0);
 			}
 			
@@ -80,7 +86,10 @@ public class EditAlarmActivity extends SherlockActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mSbVolume.setEnabled(isChecked);
-				findViewById(R.id.txtChooseRingTone).setEnabled(isChecked);
+				mTxtChooseRingTone.setEnabled(isChecked);
+				mTxtVolume.setEnabled(isChecked);
+				mTxtChooseRingTone.getCompoundDrawables()[2].setAlpha(isChecked?255:140);
+				mImgVolume.getDrawable().setAlpha(isChecked?255:140);
 			}
 		});
 		

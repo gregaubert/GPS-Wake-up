@@ -10,6 +10,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.actionbarsherlock.widget.SearchView;
@@ -20,30 +21,14 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 	
 	private Geocoder mGeoCoder;
 	private Context mContext;
+	private InputMethodManager mInputMethodManager;
 	
 	public MapSearchView(Context context, Context themedContext) {
 		super(themedContext);
 		mGeoCoder = new Geocoder(context);
 		mContext = context;
-		setupSearchView();
-	}
-	
-	private void setupSearchView() {
-
-//		SearchManager searchManager = (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
-//		if (searchManager != null) {
-//			List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
-//
-//			SearchableInfo info = searchManager.getSearchableInfo(((Activity)mContext).getComponentName());
-//			for (SearchableInfo inf : searchables) {
-//				if (inf.getSuggestAuthority() != null
-//						&& inf.getSuggestAuthority().startsWith("applications")) {
-//					info = inf;
-//				}
-//			}
-//			setSearchableInfo(info);
-//		}
 		setOnQueryTextListener(this);
+		mInputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 	}
 
 	@Override
@@ -72,10 +57,10 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 					}
 				}
 				OverlayManager.getInstance().invalidate();
-				setQuery("", false);
-				Utility.makeCenterToast(mContext, R.string.toast_search_finish, Toast.LENGTH_SHORT).show();
 				
+				Utility.makeCenterToast(mContext, R.string.toast_search_finish, Toast.LENGTH_SHORT).show();
 				MainActivity.collapseSearchView();
+				setQuery("", false);
 				
 			} else {
 				Utility.makeCenterToast(mContext, R.string.toast_no_result, Toast.LENGTH_SHORT).show();
@@ -90,7 +75,6 @@ public class MapSearchView extends SearchView implements OnQueryTextListener {
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

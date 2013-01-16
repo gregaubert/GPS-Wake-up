@@ -37,6 +37,7 @@ import android.os.HandlerThread;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -51,7 +52,8 @@ public class MainActivity extends SherlockMapActivity {
 	private final int MENU_LIST = 0;
 	private final int MENU_GPS = 1;
 	private final int MENU_SEARCH = 2;
-	private final long UPDATE_MIN_TIME = 1000;//2 * 60 * 1000;
+	private final int MENU_HELP = 3;
+	private final long UPDATE_MIN_TIME = 5 * 1000;//2 * 60 * 1000;
 	private final float UPDATE_MIN_DISTANCE = 100;
 	private final int NOTIFICATION_ID = 8776445;
 	
@@ -134,7 +136,7 @@ public class MainActivity extends SherlockMapActivity {
 			txt_gps = R.string.menu_gps_enable;
 		}
 		
-		mMenu.add(Menu.NONE, MENU_LIST, MENU_LIST, getString(R.string.menu_list))
+		mMenu.add(Menu.NONE, MENU_LIST, MENU_LIST, R.string.menu_list)
 	        .setIcon(R.drawable.ic_list)
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
@@ -149,10 +151,14 @@ public class MainActivity extends SherlockMapActivity {
         searchView.setSubmitButtonEnabled(true);
         searchView.setQueryRefinementEnabled(true);
         
-        mMenu.add(Menu.NONE, MENU_SEARCH, MENU_SEARCH, getString(R.string.menu_search))
+        mMenu.add(Menu.NONE, MENU_SEARCH, MENU_SEARCH, R.string.menu_search)
 	        .setIcon(R.drawable.ic_search)
 	        .setActionView(searchView)
 	        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        
+        mMenu.add(Menu.NONE, MENU_HELP, MENU_HELP, R.string.menu_help)
+        	.setIcon(android.R.drawable.ic_menu_help)
+        	.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         
 		return true;
 	}
@@ -168,6 +174,9 @@ public class MainActivity extends SherlockMapActivity {
 			Intent gpsSettingsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);   
 			startActivity(gpsSettingsIntent);
 			break;
+		case MENU_HELP:
+			showHelpDialog();
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
@@ -175,6 +184,18 @@ public class MainActivity extends SherlockMapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putAll(mOverlayManager.saveInstanceState());
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		mOverlayManager.restoreInstanceState(savedInstanceState);
 	}
 	
 	private void setMapLongPress() {
@@ -200,16 +221,22 @@ public class MainActivity extends SherlockMapActivity {
 	    return false;
 	}
 	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putAll(mOverlayManager.saveInstanceState());
-	}
-	
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		mOverlayManager.restoreInstanceState(savedInstanceState);
+	private void showHelpDialog() {
+		View alertView = getLayoutInflater().inflate(R.layout.help_dialog, null);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.title_help)
+			.setCancelable(true)
+			.setIcon(android.R.drawable.ic_menu_help)
+			.setView(alertView)
+			.setNeutralButton(R.string.dialog_btn_close, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+		
+		builder.create().show();
 	}
 	
 	private void sendNotification(Alarm alarm, int distance){
@@ -417,8 +444,8 @@ public class MainActivity extends SherlockMapActivity {
 	}
 	
 	public static void collapseSearchView(){
-		if(mInstance != null && mInstance.mMenu != null && mInstance.mMenu.getItem(mInstance.MENU_GPS) != null){
-			mInstance.mMenu.getItem(mInstance.MENU_GPS).collapseActionView();
+		if(mInstance != null && mInstance.mMenu != null && mInstance.mMenu.getItem(mInstance.MENU_SEARCH) != null){
+			mInstance.mMenu.getItem(mInstance.MENU_SEARCH).collapseActionView();
 		}
 	}
 }
