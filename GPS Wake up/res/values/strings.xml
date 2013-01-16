@@ -4,6 +4,7 @@
     <string name="app_name">GPS Wake up</string>
     <string name="apikey">0Mtc-56wn9-eof-R9rn4hJM_jdCSDyJU2H3J3pA</string>
     <string name="apikey2">0Mtc-56wn9-dfojDfLT-LbR9R2phIjTuHZnYySA</string>
+    <string name="apikey_release">0Mtc-56wn9-d2UtMLBC3Dz3Zr2bTTjE60Jv9xdQ</string>
     <string name="title_activity_main">GPS Wake up!</string>
     <string name="title_activity_edit_alarm">Modifier l\'alarme</string>
     <string name="title_activity_add_alarm">Ajouter l\'alarme</string>
