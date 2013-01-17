@@ -1,6 +1,7 @@
 package org.gpswakeup.activity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -206,12 +207,31 @@ public class MainActivity extends SherlockMapActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		
+		// Save the alarm already notified
+		ArrayList<Integer> indexList = new ArrayList<Integer>();
+		for(int i = 0; i < mAlreadyRingID.size(); i++){
+			if(mAlreadyRingID.valueAt(i))
+				indexList.add(mAlreadyRingID.keyAt(i));
+		}
+		outState.putIntegerArrayList("already_ring", indexList);
+		
+		// Save the markers
 		outState.putAll(mOverlayManager.saveInstanceState());
 	}
 	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		if(mAlreadyRingID == null)
+			mAlreadyRingID = new SparseBooleanArray();
+		
+		// Restore the already notified alarms
+		for(Integer index : savedInstanceState.getIntegerArrayList("already_ring"))
+			mAlreadyRingID.put(index, true);
+		
+		// Restore the markers
 		mOverlayManager.restoreInstanceState(savedInstanceState);
 	}
 	
@@ -343,7 +363,7 @@ public class MainActivity extends SherlockMapActivity {
 				
 					@Override
 					public void onCancel(DialogInterface dialog) {
-			            // Stop the ringin alarm when the user cancel the alert dialog
+			            // Stop the ringing alarm when the user cancel the alert dialog
 						if (mMediaPlayer != null) {
 			                mMediaPlayer.stop();
 			                mMediaPlayer.release();
@@ -352,7 +372,17 @@ public class MainActivity extends SherlockMapActivity {
 					}
 				});
 				
-				alert.show();
+				try{
+					alert.show();
+				}
+				catch(Exception ex){
+					Log.e("Error showing alert.", ex.toString());
+					if (mMediaPlayer != null) {
+		                mMediaPlayer.stop();
+		                mMediaPlayer.release();
+		                mMediaPlayer = null;
+		            }
+				}
 			}
 		});
 	}
