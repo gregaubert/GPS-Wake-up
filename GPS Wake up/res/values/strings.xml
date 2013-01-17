@@ -44,7 +44,7 @@
     <string name="txt_enabled_alarms">Alarmes actives</string>
     <string name="txt_disabled_alarms">Alarmes inactives</string>
     <string name="txt_searches">Recherches</string>
-    <string name="txt_modify_alarms">Un clique sur un alarme active ou inactive permet de la modifier.</string>
+    <string name="txt_modify_alarms">Un clique sur une alarme active ou inactive permet de la modifier.</string>
     <string name="txt_alarms_list">Accès aux alarmes sauvées</string>
     <string name="txt_search_addesses">Rechercher une adresse</string>
     <string name="txt_gps_options">Options de localisation</string>
